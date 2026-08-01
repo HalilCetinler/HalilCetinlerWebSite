@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>İbrahim Halil Çetinler — App Developer</title>
+<title>İbrahim Halil Çetinler — iOS App Developer</title>
 <meta name="description" content="İbrahim Halil Çetinler is an independent mobile app developer building simple, useful, privacy-respecting applications." />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    if (saved === "dark" || saved === "light") {
+      document.documentElement.setAttribute("data-theme", saved);
+    }
+  })();
+</script>
 <style>
   :root {
     --bg: #fafaf9;
@@ -102,6 +110,24 @@
   }
 
   nav .links a:hover { color: var(--text); }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .theme-toggle:hover { border-color: var(--accent); }
 
   main {
     max-width: var(--max-width);
@@ -227,6 +253,7 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="#privacy">Privacy Policy</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark and light theme">🌙</button>
     </div>
   </nav>
 </header>
@@ -234,7 +261,7 @@
 <main>
 
   <section class="hero" id="top">
-    <p class="eyebrow">App Developer</p>
+    <p class="eyebrow">iOS App Developer</p>
     <h1>İbrahim Halil Çetinler</h1>
     <p class="lead">
       I'm an independent developer building simple, reliable, and privacy-respecting
@@ -367,5 +394,30 @@
   <span><a href="mailto:hcetinlerbusiness@gmail.com">hcetinlerbusiness@gmail.com</a></span>
 </footer>
 
+<script>
+  (function () {
+    var toggle = document.getElementById("themeToggle");
+    var systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function currentTheme() {
+      var saved = localStorage.getItem("theme");
+      if (saved === "dark" || saved === "light") return saved;
+      return systemDark.matches ? "dark" : "light";
+    }
+
+    function applyIcon(theme) {
+      toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+
+    applyIcon(currentTheme());
+
+    toggle.addEventListener("click", function () {
+      var next = currentTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      applyIcon(next);
+    });
+  })();
+</script>
 </body>
 </html>
